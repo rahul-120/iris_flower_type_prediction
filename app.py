@@ -58,6 +58,7 @@ with gr.Blocks(css=css) as demo:
         with gr.Column():
             output_text = gr.Textbox(label="Prediction")
             output_image = gr.Image(label="Flower")
+            
 
     btn.click(
         fn=predict,
