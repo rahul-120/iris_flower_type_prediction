@@ -5,13 +5,11 @@ import numpy as np
 # Load model
 model = joblib.load("iris_knn_model.pkl")
 
-# Prediction function
 def predict(sepal_length, sepal_width, petal_length, petal_width):
     data = np.array([[sepal_length, sepal_width, petal_length, petal_width]])
     prediction = model.predict(data)[0]
     
-    species = ["setosa", "versicolor", "virginica"]
-    return species[prediction]
+    return prediction
 
 # Gradio UI
 interface = gr.Interface(
