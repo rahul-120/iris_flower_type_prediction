@@ -1,16 +1,17 @@
 import gradio as gr
-import joblib
 import numpy as np
+from sklearn.datasets import load_iris
+from sklearn.neighbors import KNeighborsClassifier
 
-# Load trained model
-model = joblib.load("iris_knn_model.pkl")
+# Train model directly (no .pkl needed)
+iris = load_iris()
+X = iris.data
+y = iris.target
 
-# Flower images
-flower_images = {
-    "setosa": "https://upload.wikimedia.org/wikipedia/commons/5/56/Iris_setosa.jpg",
-    "versicolor": "https://upload.wikimedia.org/wikipedia/commons/4/41/Iris_versicolor_3.jpg",
-    "virginica": "https://upload.wikimedia.org/wikipedia/commons/9/9f/Iris_virginica.jpg"
-}
+model = KNeighborsClassifier(n_neighbors=3)
+model.fit(X, y)
+
+species = ["setosa", "versicolor", "virginica"]
 
 # Prediction function
 def predict(sepal_length, sepal_width, petal_length, petal_width):
@@ -19,14 +20,14 @@ def predict(sepal_length, sepal_width, petal_length, petal_width):
                           float(petal_length), float(petal_width)]])
         
         prediction = model.predict(data)[0]
-
-        return f"🌸 Predicted: {prediction.capitalize()}", flower_images[prediction]
+        
+        return f"🌸 Predicted Flower: {species[prediction].capitalize()}"
 
     except:
-        return "⚠️ Please enter valid numeric values!", None
+        return "⚠️ Please enter valid numeric values!"
 
 
-# 🎨 CSS for animation
+# 🎨 CSS Animation
 css = """
 body {
     background: linear-gradient(-45deg, #1a2a6c, #b21f1f, #fdbb2d);
@@ -45,18 +46,13 @@ body {
     background-color: #ff6b6b !important;
     color: white !important;
     border-radius: 10px !important;
-    font-size: 16px !important;
-}
-
-input {
-    border-radius: 8px !important;
 }
 """
 
-# UI Layout
+# UI
 with gr.Blocks(css=css) as demo:
 
-    gr.Markdown("## 🌸 Iris Flower Classifier (Interactive ML App)")
+    gr.Markdown("## 🌸 Iris Flower Classifier")
 
     with gr.Row():
         with gr.Column():
@@ -65,17 +61,15 @@ with gr.Blocks(css=css) as demo:
             petal_length = gr.Number(label="Petal Length (cm)")
             petal_width  = gr.Number(label="Petal Width (cm)")
 
-            predict_btn = gr.Button("Predict 🌿")
+            btn = gr.Button("Predict 🌿")
 
         with gr.Column():
-            output_text = gr.Textbox(label="Prediction")
-            output_image = gr.Image(label="Flower Image")
+            output = gr.Textbox(label="Result")
 
-    predict_btn.click(
+    btn.click(
         fn=predict,
         inputs=[sepal_length, sepal_width, petal_length, petal_width],
-        outputs=[output_text, output_image]
+        outputs=output
     )
 
-# Launch app
 demo.launch()
