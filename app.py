@@ -3,7 +3,7 @@ import joblib
 import numpy as np
 
 # Load model
-model = joblib.load("iris_model.pkl")
+model = joblib.load("iris_knn_model.pkl")
 
 # Flower images (online links)
 flower_images = {
