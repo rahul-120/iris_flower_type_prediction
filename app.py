@@ -30,14 +30,14 @@ def predict(sepal_length, sepal_width, petal_length, petal_width):
 # 🎨 CSS Animation
 css = """
 body {
-    background: linear-gradient(-45deg, #1a2a6c, #b21f1f, #fdbb2d);
+    background: linear-gradient(-90deg, #1a2a6c, #b21f1f, #fdbb2d);
     background-size: 400% 400%;
     animation: gradientBG 10s ease infinite;
     color: white;
 }
 
 @keyframes gradientBG {
-    0% { background-position: 0% 50%; }
+    0% { background-position: 20% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
@@ -71,5 +71,7 @@ with gr.Blocks(css=css) as demo:
         inputs=[sepal_length, sepal_width, petal_length, petal_width],
         outputs=output
     )
+
+
 
 demo.launch()
